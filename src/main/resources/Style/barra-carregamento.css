@@ -1,0 +1,33 @@
+.progress-bar.luxo-progress {
+    -fx-accent: linear-gradient(
+            to right,
+            #b8860b,
+            #ffd700,
+            #fff3b0,
+            #ffd700,
+            #b8860b
+    );
+}
+
+.progress-bar.luxo-progress > .track {
+    -fx-background-color: rgba(0,0,0,0.65);
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: rgba(255, 215, 0, 0.6);
+    -fx-border-width: 2;
+}
+
+.progress-bar.luxo-progress > .bar {
+    -fx-background-radius: 12;
+    -fx-background-color: linear-gradient(
+            to right,
+            #6b4f00,
+            #b8860b,
+            #ffd700,
+            #fff7c2,
+            #ffd700,
+            #b8860b,
+            #6b4f00
+    );
+    -fx-effect: dropshadow(gaussian, rgba(255,215,0,0.9), 15, 0.5, 0, 0);
+}

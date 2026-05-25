@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.controller.PricipalController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <StackPane fx:id="topBar" prefHeight="146.0" prefWidth="1366.0" stylesheets="@../../../Style/animacao.css" AnchorPane.bottomAnchor="622.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="23.0">
+                           <image>
+                              <Image url="@../../../Images/icon-static.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="iconeRoda" fitHeight="100.0" fitWidth="100.0" layoutX="33.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="23.0">
+                           <image>
+                              <Image url="@../../../Images/icon-rotation.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="214.0" layoutY="38.0" prefHeight="57.0" prefWidth="436.0" styleClass="luxo-gold-label" text="Hotel Luxo Master" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="43.0">
+                           <font>
+                              <Font size="45.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="21.0" prefWidth="88.0" spacing="8.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Button fx:id="botaoMin" mnemonicParsing="false" onAction="#minimizar" prefHeight="20.0" prefWidth="20.0" styleClass="button-img">
+                                 <graphic>
+                                    <ImageView fitHeight="14.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../Images/2.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="botaoMax" layoutX="92.0" layoutY="46.0" mnemonicParsing="false" onAction="#maximizar" styleClass="button-img">
+                                 <graphic>
+                                    <ImageView fitHeight="14.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../Images/3.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="botaoFechar" layoutX="110.0" layoutY="46.0" mnemonicParsing="false" onAction="#fecharAplicacao" prefHeight="20.0" prefWidth="24.0" styleClass="button-img-fechar">
+                                 <graphic>
+                                    <ImageView fitHeight="14.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../Images/1.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="106.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="81.0">
+                           <children>
+                              <Button mnemonicParsing="false" styleClass="button-img">
+                                 <graphic>
+                                    <ImageView fitHeight="37.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                                       <image>
+                                          <Image url="@../../../Images/4.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="84.0" layoutY="10.0" mnemonicParsing="false" onAction="#voltarLoguin" styleClass="luxo-search-button">
+                                 <graphic>
+                                    <ImageView fitHeight="37.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../Images/5.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </StackPane>
+            <TabPane prefHeight="558.0" prefWidth="1366.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="146.0">
+              <tabs>
+                <Tab text="Guia de Reservas">
+                     <content>
+                        <AnchorPane fx:id="tabReserva" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <AnchorPane prefHeight="200.0" prefWidth="611.0" styleClass="luxo-pane" AnchorPane.bottomAnchor="290.0" AnchorPane.leftAnchor="721.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <TextField fx:id="txtPesquisa" prefHeight="45.0" prefWidth="468.0" promptText="Pesquisar hóspede ou número de quarto" styleClass="luxo-search-field" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="15.0" />
+                                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="2.0" layoutY="73.0" prefHeight="190.0" prefWidth="609.0" styleClass="luxo-scroll" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="72.0">
+                                       <content>
+                                          <VBox fx:id="vboxResultados" prefHeight="130.0" prefWidth="575.0">
+                                             <padding>
+                                                <Insets left="10.0" right="10.0" top="10.0" />
+                                             </padding></VBox>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                              <Button layoutX="1125.0" layoutY="19.0" mnemonicParsing="false" onAction="#abrirNovaReserva" prefHeight="49.0" prefWidth="240.0" styleClass="luxo-search-button" text="   nova reserva" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <graphic>
+                                    <ImageView fitHeight="31.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../Images/6.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Button>
+                              <ScrollPane fitToWidth="true" layoutX="-17.0" layoutY="122.0" prefHeight="420.0" prefWidth="700.0" styleClass="luxo-scroll" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="122.0">
+                                 <content>
+                                    <GridPane fx:id="gridReservas" hgap="20.0" prefHeight="211.0" prefWidth="680.0" vgap="20.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <padding>
+                                          <Insets left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </content>
+                              </ScrollPane>
+                              <Label layoutX="28.0" layoutY="97.0" styleClass="luxo-gold-label-2" text="Reservas:">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" layoutX="805.0" layoutY="263.0" prefHeight="247.0" prefWidth="444.0" spacing="30.0" AnchorPane.bottomAnchor="18.0">
+                                 <children>
+                                    <StackPane fx:id="graficoOcupacao" prefHeight="260" prefWidth="260" styleClass="luxo-donut">
+            
+                                             <!-- GRÁFICO -->
+                                       <PieChart fx:id="pieOcupacao" labelsVisible="false" legendVisible="false" />
+            
+                                             <!-- FURO DO ANEL -->
+                                       <Circle radius="85" styleClass="donut-center" />
+            
+                                             <!-- TEXTO CENTRAL -->
+                                       <VBox alignment="CENTER">
+                                          <Label fx:id="lblPercentual" styleClass="donut-percent" text="0%" />
+                                          <Label styleClass="donut-subtitle" text="Ocupação" />
+                                       </VBox>
+            
+                                          </StackPane>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="259.0" prefWidth="154.0" spacing="10.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="131.0" prefHeight="0.0" prefWidth="317.0" spacing="10.0">
+                                             <children>
+                                                <Circle fill="DODGERBLUE" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="dot-livre" />
+                                                <Label styleClass="indicador-label" text="Livres" />
+                                                <Label fx:id="lblLivres" styleClass="indicador-valor" text="18" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="317.0" spacing="10.0">
+                                             <children>
+                                                <Circle fill="DODGERBLUE" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="dot-ocupado" />
+                                                <Label styleClass="indicador-label" text="Ocupados" />
+                                                <Label fx:id="lblOcupados" styleClass="indicador-valor" text="42" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="140.0" prefHeight="0.0" prefWidth="317.0" spacing="10.0">
+                                             <children>
+                                                <Circle fill="DODGERBLUE" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="dot-manutencao" />
+                                                <Label styleClass="indicador-label" text="Inutilizáveis" />
+                                                <Label fx:id="lblManutencao" styleClass="indicador-valor" text="6" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                <Tab text="Check-in / Check-out">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="luxo-gold-label-3" text="Check-in / Check-out" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0" />
+                              <Label layoutY="28.0" prefHeight="0.0" prefWidth="247.0" styleClass="subtitulo-secao-luxo" text="Gerencie entradas e saídas de hóspedes" textFill="#fcffc4" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="25.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+
+                              <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="402.0" spacing="20" styleClass="container-botoes-luxo" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="70.0">
+
+                                 <Button onAction="#filtrarCheckIn" prefHeight="45" prefWidth="170.0" styleClass="luxo-search-button" text="➜  Check-in" />
+
+                                 <Button onAction="#filtrarCheckOut" prefHeight="45" prefWidth="170.0" styleClass="luxo-search-button" text="EXIT  Check-out" />
+
+                              </HBox>
+                              <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" styleClass="luxo-scroll" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="150.0">
+                                 <content>
+                                    <VBox fx:id="containerCheckin" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                                       <padding>
+                                          <Insets left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children></AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Quartos">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <ScrollPane fitToWidth="true" layoutX="33.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" styleClass="luxo-scroll" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
+                                 <content>
+                                    <FlowPane fx:id="containerQuartos" alignment="TOP_LEFT" hgap="20.0" prefWrapLength="1300.0" vgap="20.0">
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </content></ScrollPane>
+                              <Label layoutX="8.0" layoutY="14.0" prefHeight="28.0" prefWidth="494.0" styleClass="luxo-gold-label-3" text="Controle de Quartos" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="30.0" layoutY="10.0" prefHeight="1.0" prefWidth="544.0" styleClass="arrow" text="Gerencie status e manutenção dos quartos" textFill="#fcffc4" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="25.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="50.0" maxHeight="72.0" maxWidth="1332.0" prefHeight="72.0" prefWidth="1332.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxHeight="66.0" maxWidth="262.0" prefHeight="66.0" prefWidth="262.0" spacing="10.0" styleClass="luxo-pane">
+                                       <children>
+                                          <ImageView fitHeight="37.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Images/9.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Label minWidth="145.0" text="Livre" textFill="WHITE">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="numLivre" styleClass="luxo-gold-label-3">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding></HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="13.0" maxHeight="66.0" maxWidth="262.0" prefHeight="66.0" prefWidth="262.0" spacing="10.0" styleClass="luxo-pane">
+                                       <children>
+                                          <ImageView fitHeight="37.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Images/usuario.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Label minWidth="145.0" prefHeight="27.0" prefWidth="143.0" text="Ocupado" textFill="WHITE">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="numOcupado" styleClass="luxo-gold-label-3">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" layoutX="584.0" layoutY="13.0" maxHeight="66.0" maxWidth="262.0" prefHeight="66.0" prefWidth="262.0" spacing="10.0" styleClass="luxo-pane">
+                                       <children>
+                                          <ImageView fitHeight="37.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Images/11.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Label minWidth="145.0" text="Manutenção" textFill="WHITE">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="numManu" styleClass="luxo-gold-label-3">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                           </children></AnchorPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+      <StackPane fx:id="overlayNovaReserva" alignment="CENTER" layoutX="683.0" layoutY="384.0" managed="false" style="-fx-background-color: rgba(0,0,0,0.7);" visible="false">
+
+         <VBox maxHeight="380.0" maxWidth="700" minHeight="450.0" minWidth="700.0" prefHeight="380.0" prefWidth="700.0" spacing="15" styleClass="luxo-popup">
+
+            <padding>
+               <Insets bottom="30" left="30" right="30" top="30" />
+            </padding>
+
+            <HBox alignment="CENTER_LEFT">
+               <Label styleClass="luxo-popup-title" text="Nova Reserva" />
+               <Region HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <HBox spacing="15">
+               <VBox spacing="5" HBox.hgrow="ALWAYS">
+                  <Label styleClass="label-campo" text="Nome do Hóspede" />
+                  <TextField fx:id="campoNome" minHeight="35.0" prefHeight="35.0" prefWidth="174.0" promptText="Nome completo" styleClass="luxo-search-field" />
+               </VBox>
+               <VBox prefWidth="200" spacing="5">
+                  <Label text="Cpf" />
+                  <TextField fx:id="campoCpf" prefHeight="35.0" prefWidth="191.0" promptText="000.000.000-00" styleClass="luxo-search-field" />
+               </VBox>
+            </HBox>
+            <HBox layoutX="35.0" layoutY="75.0" spacing="15">
+               <children>
+                  <VBox spacing="5" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="label-campo" text="Email" />
+                        <TextField fx:id="campoEmail" minHeight="35.0" prefHeight="35.0" prefWidth="174.0" promptText="email@exemplo.com" styleClass="luxo-search-field" />
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="200" spacing="5">
+                     <children>
+                        <Label text="Telefone" />
+                        <TextField fx:id="campoTelefone" prefHeight="35.0" prefWidth="191.0" promptText="99 9999-9999" styleClass="luxo-search-field" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox layoutX="35.0" layoutY="219.0" spacing="15">
+               <children>
+                  <VBox prefWidth="120" spacing="5">
+                     <children>
+                        <Label styleClass="label-campo" text="Quarto" />
+                        <ComboBox fx:id="boxNumQuarto" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="5" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="label-campo" text="Check-in" />
+                        <DatePicker fx:id="dataCheckIn" maxWidth="Infinity" minHeight="35.0" promptText="dd/mm/aaaa" styleClass="luxo-datepicker" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="5" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="label-" text="Check-out" />
+                        <DatePicker fx:id="dataCheckOut" maxWidth="Infinity" minHeight="35.0" promptText="dd/mm/aaaa" styleClass="luxo-datepicker" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+               <HBox spacing="15">
+               <VBox prefWidth="120" spacing="5">
+                  <Label styleClass="label-campo" text="Forma de Pagamento" />
+                  <ComboBox fx:id="boxFormaPag" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+               </VBox>
+               <VBox layoutX="10.0" layoutY="10.0" prefWidth="120" spacing="5">
+                  <children>
+                     <Label styleClass="label-campo" text="Status de Pagamento" />
+                     <ComboBox fx:id="boxStatusPag" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                  </children>
+               </VBox>
+               <VBox layoutX="145.0" layoutY="10.0" prefWidth="120" spacing="5">
+                  <children>
+                     <Label styleClass="label-campo" text="Total a Pagar" />
+                     <Label fx:id="lblTotal" maxHeight="35.0" maxWidth="150.0" minHeight="35.0" minWidth="150.0" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-search-field" />
+                  </children>
+               </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="15">
+               <padding> <Insets top="10" /> </padding>
+               <Button onAction="#fecharNovaReserva" prefWidth="120" styleClass="luxo-search-button" text="Cancelar" />
+               <Button onAction="#salvarNovaReserva" prefWidth="150" styleClass="luxo-search-button" text="Criar Reserva" />
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </HBox>
+
+         </VBox>
+      </StackPane>
+      <StackPane fx:id="overlayConfirmar" alignment="CENTER" layoutX="683.0" layoutY="384.0" managed="false" style="-fx-background-color: rgba(0,0,0,0.7);" visible="false">
+         <children>
+            <VBox maxHeight="-Infinity" maxWidth="420.0" minWidth="420.0" prefWidth="447.0" spacing="15" styleClass="luxo-popup">
+               <padding>
+                  <Insets bottom="30" left="30" right="30" top="30" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER_LEFT" maxHeight="57.0" maxWidth="370.0" prefHeight="18.0" prefWidth="370.0">
+                     <children>
+                        <Label prefHeight="25.0" prefWidth="236.0" styleClass="luxo-popup-title" text="Confirmar Check-in" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="nomeConfirmar" alignment="CENTER" minHeight="35.0" prefHeight="17.0" prefWidth="419.0" styleClass="luxo-search-field" />
+                  <VBox layoutX="35.0" layoutY="85.0" maxHeight="57.0" maxWidth="370.0" spacing="5">
+                     <children>
+                        <Label prefHeight="20.0" prefWidth="74.0" text="Ckelist" textFill="#fcffc4">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" />
+                           </VBox.margin></Label>
+                        <Label layoutX="20.0" layoutY="10.0" prefHeight="20.0" prefWidth="217.0" text="✔ Documentos verificados" textFill="#16ab19">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="35.0" prefHeight="20.0" prefWidth="219.0" text="✔ Pagamento confirmado" textFill="#16ab19">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="60.0" prefHeight="20.0" prefWidth="208.0" text="✔ Quarto preparado" textFill="#16ab19">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <HBox alignment="CENTER" maxHeight="57.0" maxWidth="370.0" spacing="15">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#fecharConfirmar" styleClass="luxo-search-button" text="Cancelar" />
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="252.0" styleClass="luxo-search-button" text="Comfirmar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+      <StackPane fx:id="overlayEditarReserva" alignment="CENTER" layoutX="683.0" layoutY="384.0" managed="false" style="-fx-background-color: rgba(0,0,0,0.7);" visible="false">
+         <children>
+            <VBox maxHeight="380.0" maxWidth="700" minHeight="450.0" minWidth="700.0" prefHeight="380.0" prefWidth="700.0" spacing="15" styleClass="luxo-popup">
+               <padding>
+                  <Insets bottom="30" left="30" right="30" top="30" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label styleClass="luxo-popup-title" text="Editar Reserva" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="15">
+                     <children>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-campo" text="Nome do Hóspede" />
+                              <TextField fx:id="campoNome1" minHeight="35.0" prefHeight="35.0" prefWidth="174.0" promptText="Nome completo" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                        <VBox prefWidth="200" spacing="5">
+                           <children>
+                              <Label text="Cpf" />
+                              <TextField fx:id="campoCpf1" prefHeight="35.0" prefWidth="191.0" promptText="000.000.000-00" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="35.0" layoutY="75.0" spacing="15">
+                     <children>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-campo" text="Email" />
+                              <TextField fx:id="campoEmail1" minHeight="35.0" prefHeight="35.0" prefWidth="174.0" promptText="email@exemplo.com" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                        <VBox prefWidth="200" spacing="5">
+                           <children>
+                              <Label text="Telefone" />
+                              <TextField fx:id="campoTelefone1" prefHeight="35.0" prefWidth="191.0" promptText="99 9999-9999" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="35.0" layoutY="219.0" spacing="15">
+                     <children>
+                        <VBox prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Quarto" />
+                              <ComboBox fx:id="boxNumQuarto1" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-campo" text="Check-in" />
+                              <DatePicker fx:id="dataCheckIn1" maxWidth="Infinity" minHeight="35.0" promptText="dd/mm/aaaa" styleClass="luxo-datepicker" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-" text="Check-out" />
+                              <DatePicker fx:id="dataCheckOut1" maxWidth="Infinity" minHeight="35.0" promptText="dd/mm/aaaa" styleClass="luxo-datepicker" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox spacing="15">
+                     <children>
+                        <VBox prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Forma de Pagamento" />
+                              <ComboBox fx:id="boxFormaPag1" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Status de Pagamento" />
+                              <ComboBox fx:id="boxStatusPag1" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="145.0" layoutY="10.0" prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Total a Pagar" />
+                              <Label fx:id="lblTotal1" maxHeight="35.0" maxWidth="150.0" minHeight="35.0" minWidth="150.0" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="15">
+                     <padding>
+                        <Insets top="10" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button onAction="#apagarReserva" prefWidth="120" styleClass="luxo-search-button" text="Apagar" />
+                        <Button onAction="#fecharEditar" prefWidth="120.0" styleClass="luxo-search-button" text="Cancelar" />
+                        <Button layoutX="125.0" layoutY="20.0" onAction="#salvarEdicao" prefWidth="120" styleClass="luxo-search-button" text="Salvar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+      <StackPane fx:id="overlayDetalhes2" alignment="CENTER" layoutX="683.0" layoutY="384.0" managed="false" style="-fx-background-color: rgba(0,0,0,0.7);" visible="false">
+         <children>
+            <VBox maxHeight="380.0" maxWidth="700" minHeight="450.0" minWidth="700.0" prefHeight="380.0" prefWidth="700.0" spacing="15" styleClass="luxo-popup">
+               <padding>
+                  <Insets bottom="30" left="30" right="30" top="30" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label styleClass="luxo-popup-title" text="Detalhes" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="15">
+                     <children>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-campo" text="Nome do Hóspede" />
+                              <TextField fx:id="campoNome2" minHeight="35.0" prefHeight="35.0" prefWidth="174.0" promptText="Nome completo" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                        <VBox prefWidth="200" spacing="5">
+                           <children>
+                              <Label text="Cpf" />
+                              <TextField fx:id="campoCpf2" prefHeight="35.0" prefWidth="191.0" promptText="000.000.000-00" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="35.0" layoutY="75.0" spacing="15">
+                     <children>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-campo" text="Email" />
+                              <TextField fx:id="campoEmail2" minHeight="35.0" prefHeight="35.0" prefWidth="174.0" promptText="email@exemplo.com" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                        <VBox prefWidth="200" spacing="5">
+                           <children>
+                              <Label text="Telefone" />
+                              <TextField fx:id="campoTelefone2" prefHeight="35.0" prefWidth="191.0" promptText="99 9999-9999" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="35.0" layoutY="219.0" spacing="15">
+                     <children>
+                        <VBox prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Quarto" />
+                              <ComboBox fx:id="boxNumQuarto2" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-campo" text="Check-in" />
+                              <DatePicker fx:id="dataCheckIn2" maxWidth="Infinity" minHeight="35.0" promptText="dd/mm/aaaa" styleClass="luxo-datepicker" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="label-" text="Check-out" />
+                              <DatePicker fx:id="dataCheckOut2" maxWidth="Infinity" minHeight="35.0" promptText="dd/mm/aaaa" styleClass="luxo-datepicker" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox spacing="15">
+                     <children>
+                        <VBox prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Forma de Pagamento" />
+                              <ComboBox fx:id="boxFormaPag2" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Status de Pagamento" />
+                              <ComboBox fx:id="boxStatusPag2" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-combo-box" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="145.0" layoutY="10.0" prefWidth="120" spacing="5">
+                           <children>
+                              <Label styleClass="label-campo" text="Total a Pagar" />
+                              <Label fx:id="lblTotal2" maxHeight="35.0" maxWidth="150.0" minHeight="35.0" minWidth="150.0" prefHeight="35.0" prefWidth="150.0" styleClass="luxo-search-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" spacing="15">
+                     <padding>
+                        <Insets top="10" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button fx:id="btnSair" prefWidth="150" styleClass="luxo-search-button" text="Fechar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </children>
+   <stylesheets>
+      <URL value="@../../../Style/estilo.css" />
+      <URL value="@../../../Style/image-icon.css" />
+   </stylesheets>
+</StackPane>

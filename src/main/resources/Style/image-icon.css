@@ -1,0 +1,43 @@
+/* estilo padrão do botão */
+.button-img {
+    -fx-background-color: transparent; /* se quiser só a imagem */
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* quando o mouse passa por cima */
+.button-img:hover {
+    -fx-effect: dropshadow(gaussian, rgb(75, 60, 37), 10, 0.5, 0, 0);
+    -fx-scale-x: 1.1; /* aumenta 10% na largura */
+    -fx-scale-y: 1.1; /* aumenta 10% na altura */
+}
+
+/* quando o botão é pressionado */
+.button-img:pressed {
+    -fx-effect: dropshadow(gaussian, rgb(75, 60, 37), 15, 0.7, 0, 2);
+    -fx-translate-y: 2; /* opcional: dá sensação de "afundar" */
+    -fx-scale-x: 1.15; /* aumenta 15% */
+    -fx-scale-y: 1.15;
+}
+
+/* estilo padrão do botão */
+.button-img-fechar {
+    -fx-background-color: transparent; /* se quiser só a imagem */
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* quando o mouse passa por cima */
+.button-img-fechar:hover {
+    -fx-effect: dropshadow(gaussian, rgb(205, 31, 31), 10, 0.5, 0, 0);
+    -fx-scale-x: 1.1; /* aumenta 10% na largura */
+    -fx-scale-y: 1.1; /* aumenta 10% na altura */
+}
+
+/* quando o botão é pressionado */
+.button-img-fechar:pressed {
+    -fx-effect: dropshadow(gaussian, rgb(205, 31, 31), 15, 0.7, 0, 2);
+    -fx-translate-y: 2; /* opcional: dá sensação de "afundar" */
+    -fx-scale-x: 1.15; /* aumenta 15% */
+    -fx-scale-y: 1.15;
+}

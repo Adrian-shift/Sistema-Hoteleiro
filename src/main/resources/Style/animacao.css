@@ -1,0 +1,40 @@
+#topBarBackground {
+    -fx-background-color:
+            linear-gradient(to bottom,
+            #1a1a1a,
+            #0f0f0f
+            );
+}
+
+#lightLayer {
+    -fx-fill:
+            linear-gradient(to right,
+            rgba(255,215,120,0.0) 0%,
+            rgba(255,215,120,0.18) 40%,
+            rgba(255,215,120,0.30) 50%,
+            rgba(255,215,120,0.18) 60%,
+            rgba(255,215,120,0.0) 100%
+            );
+}
+
+#glassLayer {
+    -fx-background-color:
+            linear-gradient(to bottom,
+            rgba(255,255,255,0.08),
+            rgba(255,255,255,0.02)
+            );
+}
+
+#goldLine {
+    -fx-fill:
+            linear-gradient(to right,
+            rgba(255,215,120,0.0),
+            rgba(255,215,120,0.85),
+            rgba(255,215,120,0.0)
+            );
+    -fx-effect:
+            dropshadow(gaussian,
+            rgba(255,215,120,0.6),
+            12, 0.4, 0, 0);
+}
+

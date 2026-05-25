@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="432.0" prefWidth="768.0" stylesheets="@../../../Style/estilo.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.controller.SplashController">
+   <children>
+      <ImageView fitHeight="432.0" fitWidth="768.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Images/LuxoMaster.png" />
+         </image>
+      </ImageView>
+      <ProgressBar fx:id="progressBar" layoutX="83.0" layoutY="358.0" prefWidth="401.0" progress="0.0" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" />
+      <Label fx:id="lblPercentual" alignment="CENTER" layoutX="80.0" layoutY="390.0" prefHeight="17.0" prefWidth="608.0" styleClass="luxo-percent-label" />
+      <Label fx:id="lblStatus" alignment="CENTER" layoutX="80.0" layoutY="284.0" prefHeight="17.0" prefWidth="608.0" styleClass="luxo-status-label" />
+   </children>
+</AnchorPane>
