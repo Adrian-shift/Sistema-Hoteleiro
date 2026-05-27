@@ -1,4 +1,4 @@
 package com.example.demo.entities;
 
-public class quarto {
+public class Numero {
 }
