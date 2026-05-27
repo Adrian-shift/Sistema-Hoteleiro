@@ -1,4 +1,4 @@
 package com.example.demo.entities;
 
-public class reserva {
+public class Hospede {
 }
