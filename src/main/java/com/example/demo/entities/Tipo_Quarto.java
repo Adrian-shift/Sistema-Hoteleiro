@@ -1,5 +1,4 @@
 package com.example.demo.entities;
 
-public class endereco {
-
+public class Tipo_Quarto {
 }
