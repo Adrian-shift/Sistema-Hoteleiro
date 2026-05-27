@@ -4,6 +4,7 @@ module com.example.demo {
     requires javafx.graphics;
     requires java.desktop; // Adicione esta linha por segurança
     requires javafx.media;
+    requires java.sql;
 
     // Abre os pacotes para o JavaFX conseguir ler suas classes e arquivos
     opens com.example.demo to javafx.fxml;
