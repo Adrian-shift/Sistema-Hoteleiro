@@ -1,5 +1,5 @@
 package com.example.demo.entities;
 
-public class endereco {
+public class Endereco {
 
 }
