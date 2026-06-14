@@ -2,74 +2,94 @@ package com.example.demo.db;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
-/**
- * CLASSE DE CONEXÃO (SINGLETON PATTERN CONCEPT)
- * * CONCEITO DIDÁTICO: Concentra a responsabilidade de abrir, fechar e gerenciar
- * a conexão com o banco de dados. Evita código duplicado e conexões "órfãs" abertas na memória.
- */
-public class DB {
+public final class DB {
 
-    // Objeto de conexão estático: garante que o aplicativo possa compartilhar a mesma conexão
     private static Connection conn = null;
 
-    /**
-     * Abre e retorna a conexão ativa com o banco de dados.
-     */
+    private DB() {
+    }
+
     public static Connection getConnection() {
-        if (conn == null) { // Só abre se não existir uma conexão ativa (Economia de recursos)
-            try {
-                Properties props = loadProperties(); // Carrega os dados do arquivo de texto
-                String url = props.getProperty("dburl"); // jdbc:mysql://localhost:3306/nome_banco
+        try {
+            if (conn == null || conn.isClosed()) {
+                Properties props = loadProperties();
+                String url = requireProperty(props, "dburl");
                 conn = DriverManager.getConnection(url, props);
-            } catch (SQLException e) {
-                // Captura o erro nativo do SQL e joga na nossa exceção customizada amigável
-                throw new db.DbException(e.getMessage());
             }
+            return conn;
+        } catch (SQLException e) {
+            throw new DbException("Erro ao abrir conexao com o banco de dados.", e);
         }
-        return conn;
     }
 
-    /**
-     * Fecha a conexão de forma segura.
-     */
     public static void closeConnection() {
-        if (conn != null) {
+        closeConnection(conn);
+        conn = null;
+    }
+
+    public static void closeConnection(Connection connection) {
+        if (connection != null) {
             try {
-                conn.close();
-                conn = null; // Reseta para nulo para que possa ser reaberta futuramente se necessário
+                connection.close();
             } catch (SQLException e) {
-                throw new db.DbException(e.getMessage());
+                throw new DbException("Erro ao fechar conexao com o banco de dados.", e);
+            }
+        }
+    }
+
+    public static void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                throw new DbException("Erro ao fechar Statement.", e);
             }
         }
     }
 
     /**
-     * MÉTODO AUXILIAR: Lê o arquivo 'db.properties' para isolar dados sensíveis
-     * (como usuário e senha do banco) do código-fonte. Boa prática de segurança de mercado.
+     * @deprecated Use {@link #closeStatement(Statement)}.
      */
+    @Deprecated
+    public static void closeStatment(Statement statement) {
+        closeStatement(statement);
+    }
+
+    public static void closeResultSet(ResultSet resultSet) {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                throw new DbException("Erro ao fechar ResultSet.", e);
+            }
+        }
+    }
+
     private static Properties loadProperties() {
         try (FileInputStream fs = new FileInputStream("db.properties")) {
             Properties props = new Properties();
             props.load(fs);
+            requireProperty(props, "user");
+            requireProperty(props, "password");
+            requireProperty(props, "dburl");
             return props;
         } catch (IOException e) {
-            throw new db.DbException("Erro ao ler credenciais do banco: " + e.getMessage());
+            throw new DbException("Erro ao ler o arquivo db.properties.", e);
         }
     }
 
-    // Métodos utilitários para fechar Statements e ResultSets com segurança, evitando vazamento de memória (Memory Leak)
-    public static void closeStatment(Statement st) {
-        if (st != null) {
-            try { st.close(); } catch (SQLException e) { throw new db.DbException(e.getMessage()); }
+    private static String requireProperty(Properties props, String name) {
+        String value = props.getProperty(name);
+        if (value == null || value.trim().isEmpty()) {
+            throw new DbException("Propriedade obrigatoria ausente no db.properties: " + name);
         }
-    }
-
-    public static void closeResultSet(ResultSet rs) {
-        if (rs != null) {
-            try { rs.close(); } catch (SQLException e) { throw new db.DbException(e.getMessage()); }
-        }
+        return value;
     }
 }
