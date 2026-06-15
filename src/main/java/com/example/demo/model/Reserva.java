@@ -47,4 +47,24 @@ public class Reserva {
     public String toString() {
         return "Reserva [Hóspede=" + nomeHospede + ", Quarto=" + quarto + ", Data=" + dataReserva + "]";
     }
+
+    public int getIdHospede() {
+        return 0;
+    }
+
+    public int getIdQuarto() {
+        return 0;
+    }
+
+    public String getDataCheckinPrevista() {
+        return null;
+    }
+
+    public String getDataCheckoutPrevista() {
+        return null;
+    }
+
+    public double getValorTotal() {
+        return 0;
+    }
 }

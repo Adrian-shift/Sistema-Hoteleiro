@@ -16,5 +16,12 @@ public class Quarto {
     }
 
 
+    public int getIdTipoQuarto() {
+        return id;
+    }
+
+    public String getNumero() {
+        return null;
+    }
 }
 
