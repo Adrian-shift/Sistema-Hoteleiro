@@ -4,10 +4,10 @@ Projeto acadêmico desenvolvido com o objetivo de aplicar os conceitos de Progra
 
 ## Integrantes do grupo
 
-
-| [![Adrian-shift](https://githubusercontent.com)](https://github.com) | [![juliorosasales](https://githubusercontent.com)](https://github.com) | [![GuilhermeRoque-1412](https://githubusercontent.com)](https://github.com) | [![AnaClaraDourado](https://githubusercontent.com)](https://github.com) |
-| :---: | :---: | :---: | :---: |
-| [**Adrian-shift**](https://github.com) | [**juliorosasales**](https://github.com) | [**GuilhermeRoque-1412**](https://github.com) | [**AnaClaraDourado**](https://github.com) |
+* Adrian Luis Alves Rocha
+* Ana Clara Seixas Dourado
+* Guilherme Roque dos Anjos
+* Júlio Cézar Rosa Sales
 
 ---
 
@@ -57,7 +57,7 @@ useSSL=false
 1. Clone este repositório:
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/Adrian-shift/Sistema-Hoteleiro.git
 ```
 
 2. Abra o projeto utilizando a IDE IntelliJ IDEA.
