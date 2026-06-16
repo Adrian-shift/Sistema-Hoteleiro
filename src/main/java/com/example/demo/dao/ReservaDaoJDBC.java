@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservaDaoJDBC implements ReservaDao {
+public class    ReservaDaoJDBC implements ReservaDao {
 
     private final Connection conn;
 
@@ -53,6 +53,8 @@ public class ReservaDaoJDBC implements ReservaDao {
             );
 
             st.setBigDecimal(6, reserva.getValorTotal());
+
+            System.out.println("Status enviado: '" + reserva.getStatusReserva() + "'");
 
             int rowsAffected = st.executeUpdate();
 

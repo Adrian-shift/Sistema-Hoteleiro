@@ -1329,7 +1329,7 @@ public class PricipalController {
         reserva.setQuarto(quarto);
         reserva.setDataCheckinPrevista(reservaTwo.getDataCheckIn());
         reserva.setDataCheckoutPrevista(reservaTwo.getDataCheckOut());
-        reserva.setStatusReserva(reservaTwo.getStatusPagamento());
+        reserva.setStatusReserva("CRIADA");
         reserva.setValorTotal(java.math.BigDecimal.valueOf(reservaTwo.getValorTotal()));
 
         reservaDao.insert(reserva);
