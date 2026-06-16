@@ -35,8 +35,8 @@ public class ReservaDaoJDBC implements ReservaDao {
             st = conn.prepareStatement(
                     "INSERT INTO reserva "
                             + "(id_hospede, id_quarto, data_checkin_prevista, data_checkout_prevista, "
-                            + "status_reserva, valor_total, data_criacao, data_atualizacao) "
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                            + "status_reserva, valor_total) "
+                            + "VALUES (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
 
@@ -44,10 +44,15 @@ public class ReservaDaoJDBC implements ReservaDao {
             st.setInt(2, reserva.getQuarto().getIdQuarto());
             st.setDate(3, toSqlDate(reserva.getDataCheckinPrevista()));
             st.setDate(4, toSqlDate(reserva.getDataCheckoutPrevista()));
-            st.setString(5, reserva.getStatusReserva());
+
+            st.setString(
+                    5,
+                    reserva.getStatusReserva() != null
+                            ? reserva.getStatusReserva()
+                            : "CRIADA"
+            );
+
             st.setBigDecimal(6, reserva.getValorTotal());
-            setNullableTimestamp(st, 7, reserva.getDataCriacao());
-            setNullableTimestamp(st, 8, reserva.getDataAtualizacao());
 
             int rowsAffected = st.executeUpdate();
 

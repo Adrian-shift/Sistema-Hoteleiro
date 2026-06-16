@@ -30,8 +30,8 @@ public class HospedeDaoJDBC implements HospedeDao {
         try {
             st = conn.prepareStatement(
                     "INSERT INTO hospede "
-                            + "(nome_completo, cpf, email, telefone, data_cadastro, status) "
-                            + "VALUES (?, ?, ?, ?, ?, ?)",
+                            + "(nome_completo, cpf, email, telefone, status) "
+                            + "VALUES (?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
 
@@ -39,8 +39,7 @@ public class HospedeDaoJDBC implements HospedeDao {
             st.setString(2, hospede.getCpf());
             st.setString(3, hospede.getEmail());
             st.setString(4, hospede.getTelefone());
-            setNullableTimestamp(st, 5, hospede.getDataCadastro());
-            st.setString(6, hospede.getStatus());
+            st.setString(5, hospede.getStatus());
 
             int rowsAffected = st.executeUpdate();
 
