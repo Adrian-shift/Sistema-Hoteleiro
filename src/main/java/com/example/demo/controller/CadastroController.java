@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.BancoDeDados;
-import com.example.demo.model.Usuario;
+import com.example.demo.dao.UsuarioDao;
+import com.example.demo.dao.UsuarioDaoJDBC;
+import com.example.demo.db.DB;
+import com.example.demo.entities.Usuario;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -90,37 +92,43 @@ public class CadastroController {
         if (temErro) {
             return;
         }
-        /*
+
         // --- VERIFICAÇÃO EXTRA: O email já existe? ---
-        if (BancoDeDados.emailJaCadastrado(email)) {
-            mensCadEmail.setText("Este e-mail já está em uso.");
-            return;
+        UsuarioDao usuarioDao = new UsuarioDaoJDBC(DB.getConnection());
+        try {
+            if (usuarioDao.findByEmail(email) != null) {
+                mensCadEmail.setText("Este e-mail já está em uso.");
+                return;
+            }
+
+            // --- SALVAR NO BANCO DE DADOS REAL ---
+            Usuario novoUsuario = new Usuario();
+            novoUsuario.setNome(nome);
+            novoUsuario.setEmail(email);
+            novoUsuario.setSenhaHash(senha);
+            novoUsuario.setAtivo(true);
+
+            usuarioDao.insert(novoUsuario);
+
+            // --- SUCESSO ---
+            System.out.println("Cadastro Validado! Salvando: " + nome);
+
+            // Exibe mensagem de sucesso
+            sucessoConta.setVisible(true);
+
+            // Desabilita o botão para evitar cliques duplos
+            btnCriar.setDisable(true);
+            btnVoltar.setDisable(true);
+
+            // Aguarda 2 segundos mostrando a mensagem de sucesso e troca para o Login
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            pause.setOnFinished(e -> {
+                GerenciadorDeTelas.trocarCena(event, "/com/example/demo/login.fxml");
+            });
+            pause.play();
+        } finally {
+            DB.closeConnection();
         }
-
-         */
-
-        // --- SALVAR NO BANCO FICTÍCIO ---
-        Usuario novoUsuario = new Usuario(nome, email, senha);
-        BancoDeDados.adicionarUsuario(novoUsuario);
-
-        // --- SUCESSO ---
-        // Aqui você chamaria o banco de dados: UsuarioDAO.salvar(novoUsuario);
-
-        System.out.println("Cadastro Validado! Salvando: " + nome);
-
-        // Exibe mensagem de sucesso
-        sucessoConta.setVisible(true);
-
-        // Desabilita o botão para evitar cliques duplos
-        btnCriar.setDisable(true);
-        btnVoltar.setDisable(true);
-
-        // Aguarda 2 segundos mostrando a mensagem de sucesso e troca para o Login
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(e -> {
-            GerenciadorDeTelas.trocarCena(event, "/com/example/demo/login.fxml");
-        });
-        pause.play();
     }
 
     // Método auxiliar para limpar textos de erro

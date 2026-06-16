@@ -1,6 +1,21 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.BancoDeDados;
+import com.example.demo.dao.CheckinCheckoutDao;
+import com.example.demo.dao.CheckinCheckoutDaoJDBC;
+import com.example.demo.dao.HospedeDao;
+import com.example.demo.dao.HospedeDaoJDBC;
+import com.example.demo.dao.PagamentoDao;
+import com.example.demo.dao.PagamentoDaoJDBC;
+import com.example.demo.dao.QuartoDao;
+import com.example.demo.dao.QuartoDaoJDBC;
+import com.example.demo.dao.ReservaDao;
+import com.example.demo.dao.ReservaDaoJDBC;
+import com.example.demo.db.DB;
+import com.example.demo.entities.CheckinCheckout;
+import com.example.demo.entities.Hospede;
+import com.example.demo.entities.Pagamento;
+import com.example.demo.entities.Quarto;
+import com.example.demo.entities.Reserva;
 import com.example.demo.model.ReservaTwo;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -30,8 +45,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import com.example.demo.model.Reserva;
 
 public class PricipalController {
 
@@ -224,7 +237,7 @@ public class PricipalController {
 
         // Carrega quartos livres
         boxNumQuarto.getItems().clear();
-        boxNumQuarto.getItems().addAll(BancoDeDados.getQuartosDisponiveis());
+        boxNumQuarto.getItems().addAll(carregarQuartosDisponiveisDoBanco());
 
         overlayNovaReserva.setVisible(true);
         overlayNovaReserva.setManaged(true);
@@ -308,7 +321,7 @@ public class PricipalController {
         ReservaTwo novaReserva = new ReservaTwo(nome, cpf, email, tel, quarto, checkIn, checkOut, formaPag, statusPag, total);
 
         //salvando no Banco
-        BancoDeDados.salvarReserva(novaReserva);
+        salvarReservaNoBanco(novaReserva);
 
         //Fecha o popup e atualiza a tela se necessário
         fecharNovaReserva();
@@ -374,7 +387,19 @@ public class PricipalController {
     @FXML
     private StackPane overlayConfirmar;
     @FXML
+    private Label nomeConfirmar;
+    
+    private ReservaTwo reservaParaConfirmar;
+
+    @FXML
     private void abrirConfirmar() {
+        overlayConfirmar.setVisible(true);
+        overlayConfirmar.setManaged(true);
+    }
+
+    private void abrirConfirmar(ReservaTwo reserva) {
+        this.reservaParaConfirmar = reserva;
+        nomeConfirmar.setText(reserva.getNomeHospede());
         overlayConfirmar.setVisible(true);
         overlayConfirmar.setManaged(true);
     }
@@ -383,6 +408,70 @@ public class PricipalController {
     private void fecharConfirmar() {
         overlayConfirmar.setVisible(false);
         overlayConfirmar.setManaged(false);
+        this.reservaParaConfirmar = null;
+    }
+
+    @FXML
+    private void confirmarCheckIn() {
+        if (reservaParaConfirmar == null) {
+            System.out.println("ERRO: Nenhuma reserva selecionada para check-in.");
+            return;
+        }
+
+        System.out.println("Realizando check-in para: " + reservaParaConfirmar.getNomeHospede());
+
+        // Buscar hóspede e quarto
+        HospedeDao hospedeDao = new HospedeDaoJDBC(DB.getConnection());
+        Hospede hospede = hospedeDao.findByCpf(reservaParaConfirmar.getCpf());
+
+        QuartoDao quartoDao = new QuartoDaoJDBC(DB.getConnection());
+        Quarto quarto = quartoDao.findByNumero(reservaParaConfirmar.getNumeroQuarto());
+
+        if (hospede != null && quarto != null) {
+            // Buscar reserva
+            ReservaDao reservaDao = new ReservaDaoJDBC(DB.getConnection());
+            List<Reserva> reservas = reservaDao.findByHospedeId(hospede.getIdHospede());
+            Reserva reservaAtual = null;
+            for (Reserva r : reservas) {
+                if (r.getQuarto() != null && r.getQuarto().getNumero().equals(reservaParaConfirmar.getNumeroQuarto())) {
+                    reservaAtual = r;
+                    break;
+                }
+            }
+
+            if (reservaAtual != null) {
+                // Criar registro de check-in
+                CheckinCheckoutDao checkinDao = new CheckinCheckoutDaoJDBC(DB.getConnection());
+                CheckinCheckout checkin = new CheckinCheckout();
+                checkin.setReserva(reservaAtual);
+                checkin.setDataCheckinReal(java.time.LocalDateTime.now());
+                checkin.setDataCheckoutReal(null);
+                checkin.setResponsavelCheckin("Sistema");
+                checkin.setResponsavelCheckout(null);
+                checkin.setStatusHospedagem("Hospedado");
+                checkinDao.insert(checkin);
+
+                // Atualizar status da reserva
+                reservaAtual.setStatusReserva("Hospedado");
+                reservaDao.update(reservaAtual);
+
+                // Atualizar status do pagamento
+                PagamentoDao pagamentoDao = new PagamentoDaoJDBC(DB.getConnection());
+                Pagamento pagamento = pagamentoDao.findByReservaId(reservaAtual.getIdReserva());
+                if (pagamento != null) {
+                    pagamento.setStatusPagamento("Hospedado");
+                    pagamentoDao.update(pagamento);
+                }
+
+                System.out.println("Check-in realizado com sucesso!");
+            }
+        }
+
+        // Fechar overlay e atualizar telas
+        fecharConfirmar();
+        carregarCheckins("TODOS");
+        carregarListaQuartos();
+        exibirReservas();
     }
 
 
@@ -414,37 +503,23 @@ public class PricipalController {
 
     public void initialize() {
 
-        int ocupados = 5;
-        int livres = 43;
-        int manutencao = 0;
-
-        numLivre.setText(String.valueOf(livres));
-        numManu.setText(String.valueOf(manutencao));
-        numOcupado.setText(String.valueOf(ocupados));
-
         //Limpa os itens antigos
         gridReservas.getChildren().clear();
 
         gridReservas.getRowConstraints().clear();
 
-        lblOcupados.setText(String.valueOf(ocupados));
-        lblLivres.setText(String.valueOf(livres));
-        lblManutencao.setText(String.valueOf(manutencao));
+        // Carrega dados reais do banco para o dashboard
+        carregarListaQuartos();
 
-        int total = ocupados + livres + manutencao;
-        double percentual = (ocupados * 100.0) / total;
-        lblPercentual.setText(String.format("%.0f%%", percentual));
-
-        PieChart.Data d3 = new PieChart.Data("Ocupados", ocupados);
-        PieChart.Data d1 = new PieChart.Data("Livres", livres);
-        PieChart.Data d2 = new PieChart.Data("Manutenção", manutencao);
-
-        pieOcupacao.getData().addAll(d1, d2, d3);
-
+        // Configuração do gráfico de ocupação (cores)
         Platform.runLater(() -> {
-            d1.getNode().setStyle("-fx-pie-color: #a8913d");
-            d2.getNode().setStyle("-fx-pie-color: #2a2a2a;");
-            d3.getNode().setStyle("-fx-pie-color: #cf8a6c;");
+            if (pieOcupacao.getData().size() >= 2) {
+                pieOcupacao.getData().get(0).getNode().setStyle("-fx-pie-color: #a8913d");
+                pieOcupacao.getData().get(1).getNode().setStyle("-fx-pie-color: #2a2a2a;");
+            }
+            if (pieOcupacao.getData().size() >= 3) {
+                pieOcupacao.getData().get(2).getNode().setStyle("-fx-pie-color: #cf8a6c;");
+            }
         });
 
         RotateTransition rt = new RotateTransition(Duration.seconds(10), iconeRoda);
@@ -461,7 +536,7 @@ public class PricipalController {
         boxFormaPag2.getItems().addAll("Dinheiro", "Pix", "Cartão Crédito", "Cartão Débito");
         boxStatusPag2.getItems().addAll("Pendente", "Confirmado", "Pago");
 
-        boxNumQuarto2.getItems().addAll(BancoDeDados.getTodosQuartos());
+        boxNumQuarto2.getItems().addAll(carregarTodosQuartosDoBanco());
 
         btnSair.setOnAction(e -> fecharDetalhes());
 
@@ -515,7 +590,7 @@ public class PricipalController {
         gridReservas.getChildren().clear();
 
         //Pega a lista do banco
-        List<ReservaTwo> lista = BancoDeDados.getReservas();
+        List<ReservaTwo> lista = carregarReservasDoBanco();
         System.out.println("Tamanho da lista no banco: " + lista.size());
 
         if (lista.isEmpty()) {
@@ -699,7 +774,7 @@ public class PricipalController {
 
 
         boxNumQuarto1.getItems().clear();
-        List<String> quartos = BancoDeDados.getQuartosDisponiveis();
+        List<String> quartos = carregarQuartosDisponiveisDoBanco();
         if (!quartos.contains(reserva.getNumeroQuarto())) {
             quartos.add(0, reserva.getNumeroQuarto());
         }
@@ -731,8 +806,7 @@ public class PricipalController {
         String novoQuarto = boxNumQuarto1.getValue();
 
         if (!quartoAntigo.equals(novoQuarto)) {
-            BancoDeDados.desocuparQuarto(quartoAntigo);
-            BancoDeDados.ocuparQuarto(novoQuarto);
+            // A lógica de ocupar/desocupar será tratada no atualizarReservaNoBanco
         }
 
 
@@ -751,6 +825,7 @@ public class PricipalController {
         if (dias <= 0) dias = 1;
         reservaEmEdicao.setValorTotal(dias * 250.00);
 
+        atualizarReservaNoBanco(reservaEmEdicao, quartoAntigo);
         exibirReservas();
         fecharEditar();
     }
@@ -758,7 +833,7 @@ public class PricipalController {
     @FXML
     private void apagarReserva() {
         if (reservaEmEdicao != null) {
-            BancoDeDados.removerReserva(reservaEmEdicao);
+            removerReservaDoBanco(reservaEmEdicao);
             exibirReservas(); // Atualiza a tela
             fecharEditar();   // Fecha o popup
             System.out.println("Reserva removida!");
@@ -800,8 +875,8 @@ public class PricipalController {
         }
 
 
-        List<ReservaTwo> reservasAtuais = BancoDeDados.getReservas();
-        List<String> todosOsQuartos = BancoDeDados.getTodosQuartos();
+        List<ReservaTwo> reservasAtuais = carregarReservasDoBanco();
+        List<String> todosOsQuartos = carregarTodosQuartosDoBanco();
 
 
         int contOcupados = 0;
@@ -840,9 +915,9 @@ public class PricipalController {
 
         if (lblOcupados != null) lblOcupados.setText(String.valueOf(contOcupados));
         if (lblLivres != null) lblLivres.setText(String.valueOf(contLivres));
+        if (lblManutencao != null) lblManutencao.setText(String.valueOf(contManutencao));
 
-
-        atualizarGrafico(contOcupados, contLivres);
+        atualizarGrafico(contOcupados, contLivres, contManutencao);
 
 
 
@@ -853,12 +928,21 @@ public class PricipalController {
     }
 
 
-    private void atualizarGrafico(int ocupados, int livres) {
+    private void atualizarGrafico(int ocupados, int livres, int manutencao) {
         if (pieOcupacao != null) {
             pieOcupacao.getData().clear();
-            pieOcupacao.getData().add(new PieChart.Data("Ocupados", ocupados));
             pieOcupacao.getData().add(new PieChart.Data("Livres", livres));
+            pieOcupacao.getData().add(new PieChart.Data("Manutenção", manutencao));
+            pieOcupacao.getData().add(new PieChart.Data("Ocupados", ocupados));
 
+            // Atualizar percentual de ocupação
+            int total = ocupados + livres + manutencao;
+            if (total > 0) {
+                double percentual = (ocupados * 100.0) / total;
+                lblPercentual.setText(String.format("%.0f%%", percentual));
+            } else {
+                lblPercentual.setText("0%");
+            }
         }
     }
 
@@ -952,7 +1036,7 @@ public class PricipalController {
 
     @FXML private TextField txtPesquisa;
     @FXML private VBox vboxResultados;
-    List<ReservaTwo> lista = BancoDeDados.getReservas();
+    List<ReservaTwo> lista = carregarReservasDoBanco();
 
 
 
@@ -1027,7 +1111,7 @@ public class PricipalController {
 
         containerCheckin.getChildren().clear();
 
-        List<ReservaTwo> lista = BancoDeDados.getReservas();
+        List<ReservaTwo> lista = carregarReservasDoBanco();
         LocalDate hoje = LocalDate.now();
 
 
@@ -1114,20 +1198,16 @@ public class PricipalController {
 
         btnAcao.setOnAction(e -> {
             if (tipo.equals("Check-in")) {
-                // Realizar Check-in
-                reserva.setStatusPagamento("Hospedado"); // Exemplo de mudança de status
-                // BancoDeDados.atualizar(reserva); // Se tiver esse método
-                System.out.println("Check-in realizado para " + reserva.getNomeHospede());
+                // Abrir overlay de confirmação de check-in
+                abrirConfirmar(reserva);
             } else {
                 // Realizar Check-out
-                BancoDeDados.removerReserva(reserva); // Libera o quarto e remove da lista
+                removerReservaDoBanco(reserva); // Libera o quarto e remove da lista
                 System.out.println("Check-out realizado. Quarto liberado.");
+                carregarCheckins("TODOS"); // Remove esse card da lista visual
+                carregarListaQuartos();    // Atualiza a cor do quarto (Livre/Ocupado)
+                exibirReservas();          // Atualiza a lista principal
             }
-
-
-            carregarCheckins("TODOS"); // Remove esse card da lista visual
-            carregarListaQuartos();    // Atualiza a cor do quarto (Livre/Ocupado)
-            exibirReservas();          // Atualiza a lista principal
         });
 
         card.getChildren().addAll(boxIcone, info, spacer, btnAcao);
@@ -1150,6 +1230,217 @@ public class PricipalController {
         carregarCheckins("OUT");
     }
 
+    // ============ MÉTODOS AUXILIARES PARA MIGRAÇÃO JDBC ============
 
+    private List<ReservaTwo> carregarReservasDoBanco() {
+        ReservaDao reservaDao = new ReservaDaoJDBC(DB.getConnection());
+        try {
+            List<Reserva> reservas = reservaDao.findAll();
+            List<ReservaTwo> listaReservaTwo = new ArrayList<>();
+            for (Reserva r : reservas) {
+                listaReservaTwo.add(convertParaReservaTwo(r));
+            }
+            return listaReservaTwo;
+        } finally {
+            DB.closeConnection();
+        }
+    }
+
+    private List<String> carregarTodosQuartosDoBanco() {
+        QuartoDao quartoDao = new QuartoDaoJDBC(DB.getConnection());
+        try {
+            List<Quarto> quartos = quartoDao.findAll();
+            List<String> numeros = new ArrayList<>();
+            for (Quarto q : quartos) {
+                numeros.add(q.getNumero());
+            }
+            return numeros;
+        } finally {
+            DB.closeConnection();
+        }
+    }
+
+    private List<String> carregarQuartosDisponiveisDoBanco() {
+        QuartoDao quartoDao = new QuartoDaoJDBC(DB.getConnection());
+        try {
+            List<Quarto> quartos = quartoDao.findByStatus("LIVRE");
+            List<String> numeros = new ArrayList<>();
+            for (Quarto q : quartos) {
+                numeros.add(q.getNumero());
+            }
+            return numeros;
+        } finally {
+            DB.closeConnection();
+        }
+    }
+
+    private ReservaTwo convertParaReservaTwo(Reserva reserva) {
+        // Buscar pagamento associado à reserva
+        PagamentoDao pagamentoDao = new PagamentoDaoJDBC(DB.getConnection());
+        Pagamento pagamento = pagamentoDao.findByReservaId(reserva.getIdReserva());
+        
+        String formaPagamento = "";
+        String statusPagamento = reserva.getStatusReserva();
+        
+        if (pagamento != null) {
+            formaPagamento = pagamento.getFormaPagamento() != null ? pagamento.getFormaPagamento() : "";
+            statusPagamento = pagamento.getStatusPagamento() != null ? pagamento.getStatusPagamento() : reserva.getStatusReserva();
+        }
+        
+        DB.closeConnection();
+        
+        ReservaTwo rt = new ReservaTwo(
+            reserva.getHospede() != null ? reserva.getHospede().getNomeCompleto() : "",
+            reserva.getHospede() != null ? reserva.getHospede().getCpf() : "",
+            reserva.getHospede() != null ? reserva.getHospede().getEmail() : "",
+            reserva.getHospede() != null ? reserva.getHospede().getTelefone() : "",
+            reserva.getQuarto() != null ? reserva.getQuarto().getNumero() : "",
+            reserva.getDataCheckinPrevista(),
+            reserva.getDataCheckoutPrevista(),
+            formaPagamento,
+            statusPagamento,
+            reserva.getValorTotal() != null ? reserva.getValorTotal().doubleValue() : 0.0
+        );
+        return rt;
+    }
+
+    private void salvarReservaNoBanco(ReservaTwo reservaTwo) {
+        // Buscar ou criar hospede
+        HospedeDao hospedeDao = new HospedeDaoJDBC(DB.getConnection());
+        Hospede hospede = hospedeDao.findByCpf(reservaTwo.getCpf());
+        if (hospede == null) {
+            hospede = new Hospede();
+            hospede.setNomeCompleto(reservaTwo.getNomeHospede());
+            hospede.setCpf(reservaTwo.getCpf());
+            hospede.setEmail(reservaTwo.getEmail());
+            hospede.setTelefone(reservaTwo.getTelefone());
+            hospede.setStatus("ATIVO");
+            hospedeDao.insert(hospede);
+        }
+
+        // Buscar quarto
+        QuartoDao quartoDao = new QuartoDaoJDBC(DB.getConnection());
+        Quarto quarto = quartoDao.findByNumero(reservaTwo.getNumeroQuarto());
+
+        // Criar reserva
+        ReservaDao reservaDao = new ReservaDaoJDBC(DB.getConnection());
+        Reserva reserva = new Reserva();
+        reserva.setHospede(hospede);
+        reserva.setQuarto(quarto);
+        reserva.setDataCheckinPrevista(reservaTwo.getDataCheckIn());
+        reserva.setDataCheckoutPrevista(reservaTwo.getDataCheckOut());
+        reserva.setStatusReserva(reservaTwo.getStatusPagamento());
+        reserva.setValorTotal(java.math.BigDecimal.valueOf(reservaTwo.getValorTotal()));
+
+        reservaDao.insert(reserva);
+
+        // Criar pagamento associado à reserva
+        PagamentoDao pagamentoDao = new PagamentoDaoJDBC(DB.getConnection());
+        Pagamento pagamento = new Pagamento();
+        pagamento.setReserva(reserva);
+        pagamento.setFormaPagamento(reservaTwo.getFormaPagamento());
+        pagamento.setStatusPagamento(reservaTwo.getStatusPagamento());
+        pagamento.setValorTotal(java.math.BigDecimal.valueOf(reservaTwo.getValorTotal()));
+        pagamento.setValorPago(java.math.BigDecimal.ZERO); // Inicialmente não pago
+        pagamento.setParcelas(1); // Padrão: 1 parcela
+        pagamento.setDataPagamento(null); // Pagamento ainda não realizado
+        pagamentoDao.insert(pagamento);
+
+        // Atualizar status do quarto para OCUPADO
+        if (quarto != null) {
+            quarto.setStatusOcupacao("OCUPADO");
+            quartoDao.update(quarto);
+        }
+
+        DB.closeConnection();
+    }
+
+    private void removerReservaDoBanco(ReservaTwo reservaTwo) {
+        // Buscar a reserva pelo CPF do hospede e número do quarto
+        HospedeDao hospedeDao = new HospedeDaoJDBC(DB.getConnection());
+        Hospede hospede = hospedeDao.findByCpf(reservaTwo.getCpf());
+
+        QuartoDao quartoDao = new QuartoDaoJDBC(DB.getConnection());
+        Quarto quarto = quartoDao.findByNumero(reservaTwo.getNumeroQuarto());
+
+        if (hospede != null && quarto != null) {
+            ReservaDao reservaDao = new ReservaDaoJDBC(DB.getConnection());
+            List<Reserva> reservas = reservaDao.findByHospedeId(hospede.getIdHospede());
+            for (Reserva r : reservas) {
+                if (r.getQuarto() != null && r.getQuarto().getIdQuarto().equals(quarto.getIdQuarto())) {
+                    reservaDao.deleteById(r.getIdReserva());
+                    break;
+                }
+            }
+
+            // Liberar o quarto
+            quarto.setStatusOcupacao("LIVRE");
+            quartoDao.update(quarto);
+        }
+
+        DB.closeConnection();
+    }
+
+    private void atualizarReservaNoBanco(ReservaTwo reservaTwo, String quartoAntigo) {
+        HospedeDao hospedeDao = new HospedeDaoJDBC(DB.getConnection());
+        Hospede hospede = hospedeDao.findByCpf(reservaTwo.getCpf());
+        if (hospede == null) return;
+
+        // Atualizar dados do hospede
+        hospede.setNomeCompleto(reservaTwo.getNomeHospede());
+        hospede.setEmail(reservaTwo.getEmail());
+        hospede.setTelefone(reservaTwo.getTelefone());
+        hospedeDao.update(hospede);
+
+        // Atualizar quarto se mudou
+        QuartoDao quartoDao = new QuartoDaoJDBC(DB.getConnection());
+        if (!quartoAntigo.equals(reservaTwo.getNumeroQuarto())) {
+            // Liberar quarto antigo
+            Quarto quartoAntigoObj = quartoDao.findByNumero(quartoAntigo);
+            if (quartoAntigoObj != null) {
+                quartoAntigoObj.setStatusOcupacao("LIVRE");
+                quartoDao.update(quartoAntigoObj);
+            }
+
+            // Ocupar novo quarto
+            Quarto novoQuarto = quartoDao.findByNumero(reservaTwo.getNumeroQuarto());
+            if (novoQuarto != null) {
+                novoQuarto.setStatusOcupacao("OCUPADO");
+                quartoDao.update(novoQuarto);
+            }
+        }
+
+        // Atualizar reserva
+        Quarto quartoAtual = quartoDao.findByNumero(reservaTwo.getNumeroQuarto());
+        ReservaDao reservaDao = new ReservaDaoJDBC(DB.getConnection());
+        List<Reserva> reservas = reservaDao.findByHospedeId(hospede.getIdHospede());
+        Reserva reservaAtualizada = null;
+        for (Reserva r : reservas) {
+            if (r.getQuarto() != null && r.getQuarto().getNumero().equals(reservaTwo.getNumeroQuarto())) {
+                r.setDataCheckinPrevista(reservaTwo.getDataCheckIn());
+                r.setDataCheckoutPrevista(reservaTwo.getDataCheckOut());
+                r.setStatusReserva(reservaTwo.getStatusPagamento());
+                r.setValorTotal(java.math.BigDecimal.valueOf(reservaTwo.getValorTotal()));
+                r.setQuarto(quartoAtual);
+                reservaDao.update(r);
+                reservaAtualizada = r;
+                break;
+            }
+        }
+
+        // Atualizar pagamento associado à reserva
+        if (reservaAtualizada != null) {
+            PagamentoDao pagamentoDao = new PagamentoDaoJDBC(DB.getConnection());
+            Pagamento pagamento = pagamentoDao.findByReservaId(reservaAtualizada.getIdReserva());
+            if (pagamento != null) {
+                pagamento.setFormaPagamento(reservaTwo.getFormaPagamento());
+                pagamento.setStatusPagamento(reservaTwo.getStatusPagamento());
+                pagamento.setValorTotal(java.math.BigDecimal.valueOf(reservaTwo.getValorTotal()));
+                pagamentoDao.update(pagamento);
+            }
+        }
+
+        DB.closeConnection();
+    }
 
 }

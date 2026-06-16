@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.Main; // Se não usar, pode remover
-import com.example.demo.dao.BancoDeDados;
+import com.example.demo.dao.UsuarioDao;
+import com.example.demo.dao.UsuarioDaoJDBC;
+import com.example.demo.db.DB;
+import com.example.demo.entities.Usuario;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
@@ -97,10 +100,14 @@ public class LoginController implements Initializable {
         }
     }
 
-    // Método simulado - AQUI VOCÊ CONECTARÁ SEU DAO/BANCO DE DADOS
+    // Método validado com DAO JDBC - Conexão real com banco de dados
     private boolean validarLoginNoBanco(String email, String senha) {
-        // Chama nosso banco fictício para verificar
-        return BancoDeDados.validarLogin(email, senha);
+        UsuarioDao usuarioDao = new UsuarioDaoJDBC(DB.getConnection());
+        try {
+            return usuarioDao.validarLogin(email, senha);
+        } finally {
+            DB.closeConnection();
+        }
     }
 
     private void abrirTelaPrincipal(ActionEvent event) {
