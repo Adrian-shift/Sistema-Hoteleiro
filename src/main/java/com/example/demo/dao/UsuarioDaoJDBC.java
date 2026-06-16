@@ -30,8 +30,8 @@ public class UsuarioDaoJDBC implements UsuarioDao {
         try {
             st = conn.prepareStatement(
                     "INSERT INTO usuario "
-                            + "(nome, email, senha_hash, ativo, data_cadastro) "
-                            + "VALUES (?, ?, ?, ?, ?)",
+                            + "(nome, email, senha_hash, ativo) "
+                            + "VALUES (?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
 
@@ -39,7 +39,6 @@ public class UsuarioDaoJDBC implements UsuarioDao {
             st.setString(2, usuario.getEmail());
             st.setString(3, usuario.getSenhaHash());
             st.setBoolean(4, usuario.getAtivo() != null ? usuario.getAtivo() : true);
-            setNullableTimestamp(st, 5, usuario.getDataCadastro());
 
             int rowsAffected = st.executeUpdate();
 
