@@ -4,35 +4,10 @@ Projeto acadêmico desenvolvido com o objetivo de aplicar os conceitos de Progra
 
 ## Integrantes do grupo
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com">
-        <img src="https://githubusercontent.com" width="100" alt="Adrian-shift"/><br />
-        <sub><b>Adrian-shift</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com">
-        <img src="https://githubusercontent.com" width="100" alt="juliorosasales"/><br />
-        <sub><b>juliorosasales</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com">
-        <img src="https://githubusercontent.com" width="100" alt="GuilhermeRoque-1412"/><br />
-        <sub><b>GuilhermeRoque-1412</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com">
-        <img src="https://githubusercontent.com" width="100" alt="AnaClaraDourado"/><br />
-        <sub><b>AnaClaraDourado</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
 
+| [![Adrian-shift](https://githubusercontent.com)](https://github.com) | [![juliorosasales](https://githubusercontent.com)](https://github.com) | [![GuilhermeRoque-1412](https://githubusercontent.com)](https://github.com) | [![AnaClaraDourado](https://githubusercontent.com)](https://github.com) |
+| :---: | :---: | :---: | :---: |
+| [**Adrian-shift**](https://github.com) | [**juliorosasales**](https://github.com) | [**GuilhermeRoque-1412**](https://github.com) | [**AnaClaraDourado**](https://github.com) |
 
 ---
 
