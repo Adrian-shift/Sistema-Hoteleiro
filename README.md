@@ -8,25 +8,25 @@ Projeto acadêmico desenvolvido com o objetivo de aplicar os conceitos de Progra
   <tr>
     <td align="center">
       <a href="https://github.com">
-        <img src="https://github.com.png" width="100px" style="border-radius: 50%;" alt="Adrian-shift"/><br />
+        <img src="https://github.com.png" width="100" alt="Adrian-shift"/><br />
         <sub><b>Adrian-shift</b></sub>
       </a>
     </td>
     <td align="center">
       <a href="https://github.com">
-        <img src="https://github.com.png" width="100px" style="border-radius: 50%;" alt="juliorosasales"/><br />
+        <img src="https://github.com.png" width="100" alt="juliorosasales"/><br />
         <sub><b>juliorosasales</b></sub>
       </a>
     </td>
     <td align="center">
       <a href="https://github.com">
-        <img src="https://github.com.png" width="100px" style="border-radius: 50%;" alt="GuilhermeRoque-1412"/><br />
+        <img src="https://github.com.png" width="100" alt="GuilhermeRoque-1412"/><br />
         <sub><b>GuilhermeRoque-1412</b></sub>
       </a>
     </td>
     <td align="center">
       <a href="https://github.com">
-        <img src="https://github.com.png" width="100px" style="border-radius: 50%;" alt="AnaClaraDourado"/><br />
+        <img src="https://github.com.png" width="100" alt="AnaClaraDourado"/><br />
         <sub><b>AnaClaraDourado</b></sub>
       </a>
     </td>
