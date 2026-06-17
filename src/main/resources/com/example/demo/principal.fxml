@@ -476,7 +476,7 @@
                   <HBox alignment="CENTER" maxHeight="57.0" maxWidth="370.0" spacing="15">
                      <children>
                         <Button mnemonicParsing="false" onAction="#fecharConfirmar" styleClass="luxo-search-button" text="Cancelar" />
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="252.0" styleClass="luxo-search-button" text="Comfirmar" />
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="252.0" styleClass="luxo-search-button" text="Confirmar" onAction="#confirmarCheckIn"/>
                      </children>
                   </HBox>
                </children>

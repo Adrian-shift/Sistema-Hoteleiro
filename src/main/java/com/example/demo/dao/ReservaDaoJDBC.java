@@ -165,11 +165,14 @@ public class    ReservaDaoJDBC implements ReservaDao {
         ResultSet rs = null;
         try {
             st = conn.prepareStatement(
-                    "SELECT id_reserva, id_hospede, id_quarto, data_checkin_prevista, data_checkout_prevista, "
-                            + "status_reserva, valor_total, data_criacao, data_atualizacao "
-                            + "FROM reserva "
-                            + "WHERE id_hospede = ? "
-                            + "ORDER BY data_checkin_prevista DESC"
+                    "SELECT r.*, " +
+                            "h.nome_completo, h.cpf, h.email, h.telefone, " +
+                            "q.numero, q.status_ocupacao " +
+                            "FROM reserva r " +
+                            "INNER JOIN hospede h ON h.id_hospede = r.id_hospede " +
+                            "INNER JOIN quarto q ON q.id_quarto = r.id_quarto " +
+                            "WHERE r.id_hospede = ? " +
+                            "ORDER BY r.data_checkin_prevista DESC"
             );
             st.setInt(1, idHospede);
             rs = st.executeQuery();
@@ -278,10 +281,13 @@ public class    ReservaDaoJDBC implements ReservaDao {
         ResultSet rs = null;
         try {
             st = conn.prepareStatement(
-                    "SELECT id_reserva, id_hospede, id_quarto, data_checkin_prevista, data_checkout_prevista, "
-                            + "status_reserva, valor_total, data_criacao, data_atualizacao "
-                            + "FROM reserva "
-                            + "ORDER BY data_checkin_prevista DESC"
+                    "SELECT r.*, " +
+                            "h.nome_completo, h.cpf, h.email, h.telefone, " +
+                            "q.numero, q.status_ocupacao " +
+                            "FROM reserva r " +
+                            "INNER JOIN hospede h ON h.id_hospede = r.id_hospede " +
+                            "INNER JOIN quarto q ON q.id_quarto = r.id_quarto " +
+                            "ORDER BY r.data_checkin_prevista DESC"
             );
             rs = st.executeQuery();
 
@@ -300,10 +306,18 @@ public class    ReservaDaoJDBC implements ReservaDao {
 
     private Reserva instantiateReserva(ResultSet rs) throws SQLException {
         Hospede hospede = new Hospede();
+
         hospede.setIdHospede(rs.getInt("id_hospede"));
+        hospede.setNomeCompleto(rs.getString("nome_completo"));
+        hospede.setCpf(rs.getString("cpf"));
+        hospede.setEmail(rs.getString("email"));
+        hospede.setTelefone(rs.getString("telefone"));
 
         Quarto quarto = new Quarto();
+
         quarto.setIdQuarto(rs.getInt("id_quarto"));
+        quarto.setNumero(rs.getString("numero"));
+        quarto.setStatusOcupacao(rs.getString("status_ocupacao"));
 
         return new Reserva(
                 rs.getInt("id_reserva"),

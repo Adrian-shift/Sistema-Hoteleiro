@@ -891,7 +891,7 @@ public class PricipalController {
 
             // Verifica se está ocupado
             for (ReservaTwo r : reservasAtuais) {
-                if (r.getNumeroQuarto().equals(numeroQuarto)) {
+                if (numeroQuarto.equals(r.getNumeroQuarto())) {
                     status = "Ocupado";
                     nomeHospede = r.getNomeHospede();
 
